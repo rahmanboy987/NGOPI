@@ -30,10 +30,11 @@ aplikasi ini terdiri dari :
   * format nota
   * barang return
 
-<ul>
-  <li>frontend framework:??</li>
-  <li>backend framework:??</li>
-</ul>
+
+frontend framework:??
+backend framework:??
+
+
 nb: Tambahan menyusul
 
 yang harus dikerjakan:
