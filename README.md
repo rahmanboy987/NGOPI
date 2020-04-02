@@ -2,6 +2,11 @@
 ## Aplikasi POS (Point Of Sale) Bertema Warkop Base On Website
 ### Proyek tugas akhir matakuliah framework
 
+### Team
+* [Muhammad Daffa Amirul Wachid](https://github.com/daffanaw)
+* []()
+* []()
+
 aplikasi ini terdiri dari :
 
 1. management laporan
@@ -51,4 +56,4 @@ yang harus dikerjakan:
 - [ ] about
 - [ ] logout
 
-[link to Demo Here!](ngopi.pmh.web.id)
+[link to Demo Here!]()
