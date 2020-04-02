@@ -5,30 +5,30 @@
 aplikasi ini terdiri dari :
 
 1. management laporan
--laporan pemasukan
--laporan pengeluaran
--laporan pendapatan (laba rugi)
--laporan produk
--laporan diskon
--laporan member
+  * laporan pemasukan
+  * laporan pengeluaran
+  * laporan pendapatan (laba rugi)
+  * laporan produk
+  * laporan diskon
+  * laporan member
 
 2. management produk
--stock barang
--kategori produk
--paket
--promo
--dll (tambahan)
+  * stock barang
+  * kategori produk
+  * paket
+  * promo
+  * dll (tambahan)
 
 3. management karyawan
--menambah data karyawan
--mengganti akses karyawan
--mengedit data karyawan
--menghapus data karyawan
+  * menambah data karyawan
+  * mengganti akses karyawan
+  * mengedit data karyawan
+  * menghapus data karyawan
 
 4. managemen pengeluaran
--kasir
--format nota
--barang return
+  * kasir
+  * format nota
+  * barang return
 
 <ul>
   <li>frontend framework:??</li>
