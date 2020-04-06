@@ -3,12 +3,12 @@
 ### Proyek tugas akhir matakuliah framework
 
 ### Team
+* [Moh. Fathur Rohman](https://github.com/rahmanboy987)
 * [Muhammad Daffa Amirul Wachid](https://github.com/daffanaw)
-* []()
-* []()
+* [Dina Ratnaningtyas](https://github.com/dinaratnatys)
+* [Faradella Anggi Dewi](https://github.com/faradella)
 
-aplikasi ini terdiri dari :
-
+### aplikasi ini terdiri dari :
 1. management laporan
   * laporan pemasukan
   * laporan pengeluaran
@@ -56,4 +56,4 @@ yang harus dikerjakan:
 - [ ] about
 - [ ] logout
 
-[link to Demo Here!]()
+[link to Demo Here!](#)
