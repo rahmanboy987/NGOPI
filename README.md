@@ -9,34 +9,30 @@
 * [Faradella Anggi Dewi](https://github.com/faradella)
 
 ### aplikasi ini terdiri dari :
-1. management laporan
+1. management laporan ()
   * laporan pemasukan
   * laporan pengeluaran
   * laporan pendapatan (laba rugi)
   * laporan produk
   * laporan diskon
-  * laporan member
 
 2. management produk
   * stock barang
   * kategori produk
   * paket
   * promo
-  * dll (tambahan)
+  * Pemesanan Barang
 
 3. management karyawan
   * menambah data karyawan
-  * mengganti akses karyawan
+  * managemen akses karyawan
   * mengedit data karyawan
   * menghapus data karyawan
 
-4. managemen pengeluaran
-  * kasir
-  * format nota
+4. managemen kasir
 
-
-frontend framework:??
-backend framework:??
+frontend framework: Bootstrap4
+backend framework: CodeIgniter 3
 
 
 nb: Tambahan menyusul
