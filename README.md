@@ -31,8 +31,8 @@
 
 4. managemen kasir
 
-frontend framework: Bootstrap4
-backend framework: CodeIgniter 3
+* frontend framework: Bootstrap4
+* backend framework: CodeIgniter 3
 
 
 nb: Tambahan menyusul
