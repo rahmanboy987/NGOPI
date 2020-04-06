@@ -33,7 +33,6 @@
 4. managemen pengeluaran
   * kasir
   * format nota
-  * barang return
 
 
 frontend framework:??
