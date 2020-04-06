@@ -9,7 +9,7 @@
 * [Faradella Anggi Dewi](https://github.com/faradella)
 
 ### aplikasi ini terdiri dari :
-1. management laporan ()
+1. management laporan
   * laporan pemasukan
   * laporan pengeluaran
   * laporan pendapatan (laba rugi)
@@ -34,6 +34,9 @@
 * frontend framework: Bootstrap4
 * backend framework: CodeIgniter 3
 
+fixed user level:
+superadmin : all access
+admin : 2, 4
 
 nb: Tambahan menyusul
 
