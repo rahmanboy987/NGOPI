@@ -58,11 +58,11 @@ CREATE TABLE `detail_masuk` (
 -- Table structure for table `gudang`
 --
 
-CREATE TABLE `gudang` (
-  `id_barang` int(11) NOT NULL,
-  `jenis_barang` varchar(64) NOT NULL,
-  `nama_barang` varchar(255) NOT NULL,
-  `stock_barang` int(11) NOT NULL,
+CREATE TABLE `produk` (
+  `id_produk` int(11) NOT NULL,
+  `jenis_produk` varchar(64) NOT NULL,
+  `nama_produk` varchar(255) NOT NULL,
+  `stock_produk` int(11) NOT NULL,
   `harga_jual` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
