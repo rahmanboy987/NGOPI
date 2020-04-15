@@ -23,22 +23,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>M. Daffa Amirul</td>
-              <td>daffanaw00@gmail.com</td>
-              <td>123</td>
-              <td>089695914319</td>
-              <td>357142302000002</td>
-              <td>Kasir</td>
-              <td>
-                <a href="#" class="btn btn-warning btn-icon-split btn-sm">
-                  <span class="text">Edit</span>
-                </a>
-                <a href="#" class="btn btn-danger btn-icon-split btn-sm">
-                  <span class="text">Delete</span>
-                </a>
-              </td>
-            </tr>
+            <?php foreach ($user as $usr) :  ?>
+              <tr>
+                <td><?php echo $usr['nama']; ?></td>
+                <td><?php echo $usr['email']; ?></td>
+                <td><?php echo $usr['pass']; ?></td>
+                <td><?php echo $usr['phone']; ?></td>
+                <td><?php echo $usr['ktp']; ?></td>
+                <td><?php echo $usr['role']; ?></td>
+                <td>
+                  <a href="#" class="btn btn-warning btn-icon-split btn-sm">
+                    <span class="text">Edit</span>
+                  </a>
+                  <a href="<?= base_url(); ?>admin/hapusUser/<?= $usr['id']; ?>" class="btn btn-danger btn-icon-split btn-sm">
+                    <span class="text">Delete</span>
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach ?>
           </tbody>
         </table>
       </div>

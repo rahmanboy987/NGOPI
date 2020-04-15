@@ -8,6 +8,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->helper('url');
+        $this->load->model('User_model');
     }
 
     public function index()
@@ -37,7 +38,15 @@ class Admin extends CI_Controller
         $this->load->view('admin/_include/head', $data);
         $this->load->view('admin/_include/side');
         $this->load->view('admin/_include/nav');
-        $this->load->view('admin/user');
+        $data['user'] = $this->User_model->getAllUser();
+        $this->load->view('admin/user', $data);
         $this->load->view('admin/_include/foot');
+    }
+
+    public function hapusUser($id)
+    {
+        $this->User_model->hapusUser($id);
+        $this->session->set_flashdata('flash', 'Dihapus');
+        redirect('admin/user');
     }
 }
