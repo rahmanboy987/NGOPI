@@ -112,6 +112,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `nama`, `email`, `pass`, `phone`, `ktp`, `role`) VALUES
+(0, 'admin', 'admin@admin.com', '$2y$10$XDTttrdYam0ssjrEZOZYs./SnAcLGPQDeoHVnNqIv/XWL2ueuiuzK', '0000', '0000', 1);
+COMMIT;
+
+--
 -- Indexes for dumped tables
 --
 

@@ -24,4 +24,40 @@ class Home extends CI_Controller
         $this->load->view('home/menu');
         $this->load->view('home/_include/foot');
     }
+
+    public function login()
+    {
+        if ($this->session->userdata('email')) {
+            redirect('admin');
+        } else {
+            $data['title'] = 'NGOPI - Login';
+            $this->load->view('auth/login');
+        }
+    }
+
+    public function signin()
+    {
+        $email = $this->input->post('email');
+        $pass = $this->input->post('pass');
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+
+        if ($user) {
+            if (password_verify($pass, $user['pass'])) {
+                $data = [
+                    'nama' => $user['nama'],
+                    'email' => $user['email'],
+                    'role' => $user['role']
+                ];
+                $this->session->set_userdata($data);
+                redirect('admin');
+            }
+        }
+        redirect('home/login');
+    }
+
+    public function forgot()
+    {
+        $data['title'] = 'NGOPI - Forgot Password';
+        $this->load->view('auth/forgot');
+    }
 }

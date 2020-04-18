@@ -27,12 +27,12 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Login Here!</h1>
                   </div>
-                  <form class="user">
+                  <form class="user" action="<?= base_url() ?>home/signin" method="POST">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" name="email" class="form-control form-control-user" placeholder="Enter Email Address...">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" name="pass" class="form-control form-control-user" placeholder="Password">
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -40,12 +40,12 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
-                    <a href="<?= base_url() ?>admin" class="btn btn-primary btn-user btn-block">Login</a>
+                    <button type="submit" name="login" class="btn btn-primary btn-user btn-block">Login</button>
                     <hr>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="<?= base_url() ?>admin/forgot">Forgot Password?</a>
+                    <a class="small" href="<?= base_url() ?>home/forgot">Forgot Password?</a>
                   </div>
                 </div>
               </div>

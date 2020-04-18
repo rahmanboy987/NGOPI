@@ -8,7 +8,12 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->helper('url');
-        $this->load->model('User_model');
+        $this->load->model('Admin_model');
+
+        $this->data['user'] = $this->Admin_model->get_session();
+        if ($this->session->userdata('email') == null) {
+            redirect(base_url('home/login'));
+        }
     }
 
     public function index()
@@ -21,32 +26,72 @@ class Admin extends CI_Controller
         $this->load->view('admin/_include/foot');
     }
 
-    public function login()
-    {
-        $data['title'] = 'NGOPI - Login';
-        $this->load->view('auth/login');
-    }
-    public function forgot()
-    {
-        $data['title'] = 'NGOPI - Forgot Password';
-        $this->load->view('auth/forgot');
-    }
-
     public function user()
     {
-        $data['title'] = 'NGOPI - Dashboard';
+        $data['user'] = $this->Admin_model->getAllUser();
+
+        $data['title'] = 'NGOPI - Karyawan';
         $this->load->view('admin/_include/head', $data);
         $this->load->view('admin/_include/side');
         $this->load->view('admin/_include/nav');
-        $data['user'] = $this->User_model->getAllUser();
         $this->load->view('admin/user', $data);
         $this->load->view('admin/_include/foot');
     }
 
+    public function add_user()
+    {
+        $nama = $this->input->post('nama_user');
+        $email = $this->input->post('email_user');
+        $pass = password_hash($this->input->post('pass_user'), PASSWORD_DEFAULT);
+        $phone = $this->input->post('phone_user');
+        $ktp = $this->input->post('ktp_user');
+        $role = $this->input->post('role_user');
+        $data = array(
+            'nama' => $nama,
+            'email' => $email,
+            'pass' => $pass,
+            'phone' => $phone,
+            'ktp' => $ktp,
+            'role' => $role
+        );
+        $this->db->insert('user', $data);
+        redirect('admin/user');
+    }
+
+    public function edit_user($id)
+    {
+        $nama = $this->input->post('nama_user');
+        $email = $this->input->post('email_user');
+        $pass = $this->input->post('pass_user');
+        $phone = $this->input->post('phone_user');
+        $ktp = $this->input->post('ktp_user');
+        $role = $this->input->post('role_user');
+        $data = array(
+            'nama' => $nama,
+            'email' => $email,
+            'pass' => $pass,
+            'phone' => $phone,
+            'ktp' => $ktp,
+            'role' => $role
+        );
+        $this->db->where('id', $id);
+        $this->db->update('user', $data);
+        redirect('admin/user');
+    }
+
     public function hapusUser($id)
     {
-        $this->User_model->hapusUser($id);
+        $this->Admin_model->hapusUser($id);
         $this->session->set_flashdata('flash', 'Dihapus');
         redirect('admin/user');
+    }
+
+    public function logout()
+    {
+        $this->session->unset_userdata('nama');
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('level');
+
+        redirect('admin');
     }
 }
