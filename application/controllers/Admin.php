@@ -19,6 +19,7 @@ class Admin extends CI_Controller
     public function index()
     {
         $data['title'] = 'NGOPI - Dashboard';
+
         $this->load->view('admin/_include/head', $data);
         $this->load->view('admin/_include/side');
         $this->load->view('admin/_include/nav');
@@ -28,13 +29,13 @@ class Admin extends CI_Controller
 
     public function user()
     {
-        $data['user'] = $this->Admin_model->getAllUser();
-
         $data['title'] = 'NGOPI - Karyawan';
+        $data['all_user'] = $this->Admin_model->getAllUser();
+
         $this->load->view('admin/_include/head', $data);
         $this->load->view('admin/_include/side');
         $this->load->view('admin/_include/nav');
-        $this->load->view('admin/user', $data);
+        $this->load->view('admin/user');
         $this->load->view('admin/_include/foot');
     }
 

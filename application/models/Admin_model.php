@@ -10,8 +10,7 @@ class Admin_model extends CI_Model
 
     public function getAllUser()
     {
-        $query = $this->db->get('user');
-        return $query->result_array();
+        return $this->db->get('user');
     }
 
     public function hapusUser($id)
