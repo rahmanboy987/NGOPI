@@ -72,7 +72,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($all_user->result_array() as $row) :  ?>
+            <?php foreach ($all_user->result_array() as $row) {  ?>
               <tr>
                 <td><?= $row['nama']; ?></td>
                 <td><?= $row['email']; ?></td>
@@ -81,71 +81,76 @@
                 <td><?php if ($row['role'] == 1) echo "Admin";
                     else if ($row['role'] == 0) echo "Staff"; ?></td>
                 <td>
-                  <button type="button" class="btn btn-primary badge" data-toggle="modal" data-target="#edit_user<?= $row['id'] ?>">Edit</button>
 
-                  <div class="modal fade" id="edit_user<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="edit_userLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="edit_userLabel">Edit Data</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
+                  <?php if ($row['email'] == $this->user['email']) { ?>
+                    <button class="btn btn-secondary badge">Edit</button>
+                    <button class="btn btn-secondary badge">Delete</a>
 
-                        <form role="form" action="<?= base_url() . 'admin/edit_user/' . $row['id'] ?>" method="post">
+                    <?php } else { ?>
+                      <button type="button" class="btn btn-primary badge" data-toggle="modal" data-target="#edit_user<?= $row['id'] ?>">Edit</button>
 
-                          <div class="modal-body">
-                            <div class="card-body">
-                              <div class="form-group">
-                                <label>Nama User</label>
-                                <input type="text" name="nama_user" class="form-control" value="<?= $row['nama'] ?>" required><br>
-                                <label>Email</label>
-                                <input type="email" name="email_user" class="form-control" value="<?= $row['email'] ?>" required><br>
-                                <label>Password</label>
-                                <input type="password" name="pass_user" class="form-control" value="<?= $row['pass'] ?>" required><br>
-                                <div class="row">
-                                  <div class="col-sm">
-                                    <label>phone</label>
-                                    <input type="text" name="phone_user" class="form-control" value="<?= $row['phone'] ?>" equired>
+                      <div class="modal fade" id="edit_user<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="edit_userLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="edit_userLabel">Edit Data</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+
+                            <form role="form" action="<?= base_url() . 'admin/edit_user/' . $row['id'] ?>" method="post">
+
+                              <div class="modal-body">
+                                <div class="card-body">
+                                  <div class="form-group">
+                                    <label>Nama User</label>
+                                    <input type="text" name="nama_user" class="form-control" value="<?= $row['nama'] ?>" required><br>
+                                    <label>Email</label>
+                                    <input type="email" name="email_user" class="form-control" value="<?= $row['email'] ?>" required><br>
+                                    <div class="row">
+                                      <div class="col-sm">
+                                        <label>phone</label>
+                                        <input type="text" name="phone_user" class="form-control" value="<?= $row['phone'] ?>" required>
+                                      </div>
+                                      <div class="col-sm">
+                                        <label>KTP</label>
+                                        <input type="text" name="ktp_user" class="form-control" value="<?= $row['ktp'] ?>" required>
+                                      </div>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="role_user" value="1" <?php if ($row['role'] == 1) echo "checked" ?>>
+                                      <label class="form-check-label">Admin</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="role_user" value="0" <?php if ($row['role'] == 0) echo "checked" ?>>
+                                      <label class="form-check-label">Kasir</label>
+                                    </div>
                                   </div>
-                                  <div class="col-sm">
-                                    <label>KTP</label>
-                                    <input type="text" name="ktp_user" class="form-control" value="<?= $row['ktp'] ?>" required>
-                                  </div>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="role_user" value="1" <?php if ($row['role'] == 1) echo "checked" ?>>
-                                  <label class="form-check-label">Admin</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="role_user" value="0" <?php if ($row['role'] == 0) echo "checked" ?>>
-                                  <label class="form-check-label">Kasir</label>
                                 </div>
                               </div>
-                            </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" name="edit_user" class="btn btn-primary">Edit User</button>
+                              </div>
+                            </form>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" name="edit_user" class="btn btn-primary">Edit User</button>
-                          </div>
-                        </form>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <a href="#" onclick="del_barang<?= $row['id'] ?>()" class="btn btn-danger badge">Delete</a>
-                  <script>
-                    function del_barang<?= $row['id'] ?>() {
-                      var txt;
-                      if (confirm("Anda yakin ingin mendelete data ini?")) {
-                        window.location = "<?= base_url() . 'admin/hapusUser/' . $row['id'] ?>";
-                      }
-                    }
-                  </script>
+                      <a href="#" onclick="del_barang<?= $row['id'] ?>()" class="btn btn-danger badge">Delete</a>
+                      <script>
+                        function del_barang<?= $row['id'] ?>() {
+                          var txt;
+                          if (confirm("Anda yakin ingin mendelete data ini?")) {
+                            window.location = "<?= base_url() . 'admin/hapusUser/' . $row['id'] ?>";
+                          }
+                        }
+                      </script>
+                    <?php } ?>
                 </td>
               </tr>
-            <?php endforeach ?>
+            <?php } ?>
           </tbody>
         </table>
       </div>

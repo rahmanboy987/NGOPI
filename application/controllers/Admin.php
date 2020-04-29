@@ -10,33 +10,40 @@ class Admin extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Admin_model');
 
-        $this->data['user'] = $this->Admin_model->get_session();
+        $this->user = $this->Admin_model->get_session();
         if ($this->session->userdata('email') == null) {
             redirect(base_url('home/login'));
         }
     }
 
+    function load_view($id = null, $data = null)
+    {
+        if ($id == null) {
+            redirect(base_url('admin'));
+        } else {
+            $data['title'] = 'NGOPI - ' . ucwords($id);
+
+            $this->load->view('admin/_include/head', $data);
+            $this->load->view('admin/_include/side');
+            $this->load->view('admin/_include/nav', $this->user);
+            $this->load->view("admin/$id");
+            $this->load->view('admin/_include/foot');
+        }
+    }
+
     public function index()
     {
-        $data['title'] = 'NGOPI - Dashboard';
-
-        $this->load->view('admin/_include/head', $data);
-        $this->load->view('admin/_include/side');
-        $this->load->view('admin/_include/nav');
-        $this->load->view('admin/index');
-        $this->load->view('admin/_include/foot');
+        $this->load_view('index');
     }
 
     public function user()
     {
-        $data['title'] = 'NGOPI - Karyawan';
-        $data['all_user'] = $this->Admin_model->getAllUser();
-
-        $this->load->view('admin/_include/head', $data);
-        $this->load->view('admin/_include/side');
-        $this->load->view('admin/_include/nav');
-        $this->load->view('admin/user');
-        $this->load->view('admin/_include/foot');
+        if ($this->user['role'] != 1) {
+            redirect(base_url('admin'));
+        } else {
+            $data['all_user'] = $this->Admin_model->getAllUser();
+            $this->load_view('user', $data);
+        }
     }
 
     public function add_user()
@@ -63,14 +70,12 @@ class Admin extends CI_Controller
     {
         $nama = $this->input->post('nama_user');
         $email = $this->input->post('email_user');
-        $pass = $this->input->post('pass_user');
         $phone = $this->input->post('phone_user');
         $ktp = $this->input->post('ktp_user');
         $role = $this->input->post('role_user');
         $data = array(
             'nama' => $nama,
             'email' => $email,
-            'pass' => $pass,
             'phone' => $phone,
             'ktp' => $ktp,
             'role' => $role
