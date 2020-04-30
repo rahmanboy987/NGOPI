@@ -122,6 +122,19 @@ class Admin extends CI_Controller
         redirect('admin/user');
     }
 
+    public function edit_schedule($id)
+    {
+        $days = $this->input->post('hari');
+        $descript = $this->input->post('waktu');
+        $data = array(
+            'days' => $days,
+            'descript' => $descript
+        );
+        $this->db->where('id_schedule', $id);
+        $this->db->update('schedule', $data);
+        redirect('admin/settings');
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('nama');

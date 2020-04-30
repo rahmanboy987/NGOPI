@@ -152,7 +152,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="submit" name="edit_highlight" class="btn btn-primary">Edit Highlightr</button>
+                                                        <button type="submit" name="edit_highlight" class="btn btn-primary">Edit Highlight</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -168,6 +168,74 @@
                                             }
                                         }
                                     </script>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Schedule Content</h6>
+        </div>
+        <div class="card-body py-3">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Hari</th>
+                            <th>Keterangan</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($schedule->result_array() as $schedule) {  ?>
+                            <tr>
+                                <td><?= $schedule['days']; ?></td>
+                                <td><?= $schedule['descript']; ?></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary badge" data-toggle="modal" data-target="#edit_schedule<?= $schedule['id_schedule'] ?>">Edit</button>
+
+                                    <div class="modal fade" id="edit_schedule<?= $schedule['id_schedule'] ?>" tabindex="-1" role="dialog" aria-labelledby="edit_scheduleLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="edit_scheduleLabel">Edit Schedule</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <form role="form" action="<?= base_url() . 'admin/edit_schedule/' . $schedule['id_schedule'] ?>" method="post">
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-sm">
+                                                                        <label>Hari</label>
+                                                                        <input type="text" name="hari" class="form-control" value="<?= $schedule['days']; ?>" required><br>
+                                                                    </div>
+                                                                    <div class="col-sm">
+                                                                        <label>Deskripsi</label>
+                                                                        <input type="text" name="waktu" class="form-control" value="<?= $schedule['descript']; ?>" required><br>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" name="edit_schedule" class="btn btn-primary">Edit Schedule</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         <?php } ?>
