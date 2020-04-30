@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 07, 2020 at 01:52 AM
+-- Generation Time: Apr 30, 2020 at 02:15 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -55,16 +55,28 @@ CREATE TABLE `detail_masuk` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gudang`
+-- Table structure for table `highlight`
 --
 
-CREATE TABLE `produk` (
-  `id_produk` int(11) NOT NULL,
-  `jenis_produk` varchar(64) NOT NULL,
-  `nama_produk` varchar(255) NOT NULL,
-  `stock_produk` int(11) NOT NULL,
-  `harga_jual` int(11) NOT NULL
+CREATE TABLE `highlight` (
+  `id_highlight` int(11) NOT NULL,
+  `mini_text` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `photo` varchar(64) NOT NULL,
+  `description` varchar(1024) NOT NULL,
+  `template` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `highlight`
+--
+
+INSERT INTO `highlight` (`id_highlight`, `mini_text`, `name`, `photo`, `description`, `template`) VALUES
+(1, 'BEST WARKOP', 'GOOD DRINKING', 'barista.png', 'Setiap cangkir kopi yang berkualitas dan dimulai dengan bahan-bahan pilihan lokal sebagai poin utama untuk rutinitas sehari-hari Anda yang menyenangkan ^_^', 1),
+(2, 'BEST COFFEE', 'TO YOU', '', '', 2),
+(3, 'FRAPPUCINO CHOCOLATE', 'COFFEES & CHOCO', 'frappucino.jpg', 'FRAPUCCINO dibuat dengan kopi diblender dengan es dan bahan-bahan lainnya seperti chocolate biasanya ditambah krim kocok yang dihias dengan butiran butiran chocolate', 3),
+(4, 'FRENCH FRIES', 'SNACK & GOOD EATS', 'products-02.jpg', 'French Fries atau biasa disebut Kentang Goreng snack yang sering diminati oleh pengunjung karena harga yang sesuai dengan kantong dan dibuat dengan kentang kentang pilihan ditambah dengan bumbu bumbu yang sesuai dengan selera pengunjung', 3),
+(5, 'NASI GORENG KU', 'EAT & GOOD TASTE', 'products-03.jpg', 'NASI GORENG menu makanan berat andalan kami yang dibuat dengan sepenuh hati dan dari bahan bahan pilihan yang harga nya sesuai dengan kantong anda dan dapat membuat anda kenyang^_^', 3);
 
 -- --------------------------------------------------------
 
@@ -98,6 +110,45 @@ CREATE TABLE `penjualan_keluar` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `produk`
+--
+
+CREATE TABLE `produk` (
+  `id_produk` int(11) NOT NULL,
+  `jenis_produk` varchar(64) NOT NULL,
+  `nama_produk` varchar(255) NOT NULL,
+  `stock_produk` int(11) NOT NULL,
+  `harga_jual` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE `schedule` (
+  `id_schedule` int(11) NOT NULL,
+  `days` varchar(16) NOT NULL,
+  `descript` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`id_schedule`, `days`, `descript`) VALUES
+(1, 'Minggu', 'TUTUP'),
+(2, 'Senin', '7:00 AM to 8:00 PM'),
+(3, 'Selasa', '7:00 AM to 8:00 PM'),
+(4, 'Rabu', '7:00 AM to 8:00 PM'),
+(5, 'Kamis', '7:00 AM to 8:00 PM'),
+(6, 'Jumat', '7:00 AM to 8:00 PM'),
+(7, 'Sabtu', '9:00 AM to 5:00 PM');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -116,8 +167,29 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `pass`, `phone`, `ktp`, `role`) VALUES
-(0, 'admin', 'admin@admin.com', '$2y$10$XDTttrdYam0ssjrEZOZYs./SnAcLGPQDeoHVnNqIv/XWL2ueuiuzK', '0000', '0000', 1);
-COMMIT;
+(0, 'admin', 'admin@admin.com', '$2y$10$XDTttrdYam0ssjrEZOZYs./SnAcLGPQDeoHVnNqIv/XWL2ueuiuzK', '0000', '0000', 1),
+(0, 'kasir', 'kasir@kasir.com', '$2y$10$aJMOU1FTTeqC.uYy4eV/weqpnmMyid2XelDx3UudyGTvXdjgIfCgC', '1111', '1111', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warkop_settings`
+--
+
+CREATE TABLE `warkop_settings` (
+  `id` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `quotes` varchar(1024) NOT NULL,
+  `place` varchar(128) NOT NULL,
+  `phone` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `warkop_settings`
+--
+
+INSERT INTO `warkop_settings` (`id`, `name`, `quotes`, `place`, `phone`) VALUES
+(1, 'NGOPI YUUK', 'PENGHILANG STRESS', 'RUNGKUT, SURABAYA', '(031)1234567');
 
 --
 -- Indexes for dumped tables
@@ -136,27 +208,21 @@ ALTER TABLE `detail_masuk`
   ADD PRIMARY KEY (`id_detail_masuk`);
 
 --
--- Indexes for table `gudang`
+-- Indexes for table `highlight`
 --
-ALTER TABLE `gudang`
-  ADD PRIMARY KEY (`id_barang`);
+ALTER TABLE `highlight`
+  ADD PRIMARY KEY (`id_highlight`);
 
 --
--- Indexes for table `pembelian_masuk`
+-- Indexes for table `schedule`
 --
-ALTER TABLE `pembelian_masuk`
-  ADD PRIMARY KEY (`id_masuk`);
+ALTER TABLE `schedule`
+  ADD PRIMARY KEY (`id_schedule`);
 
 --
--- Indexes for table `penjualan_keluar`
+-- Indexes for table `warkop_settings`
 --
-ALTER TABLE `penjualan_keluar`
-  ADD PRIMARY KEY (`id_keluar`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
+ALTER TABLE `warkop_settings`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -164,40 +230,10 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `detail_keluar`
+-- AUTO_INCREMENT for table `highlight`
 --
-ALTER TABLE `detail_keluar`
-  MODIFY `id_detail_keluar` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `detail_masuk`
---
-ALTER TABLE `detail_masuk`
-  MODIFY `id_detail_masuk` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `gudang`
---
-ALTER TABLE `gudang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pembelian_masuk`
---
-ALTER TABLE `pembelian_masuk`
-  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `penjualan_keluar`
---
-ALTER TABLE `penjualan_keluar`
-  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `highlight`
+  MODIFY `id_highlight` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

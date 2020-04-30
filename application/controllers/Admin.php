@@ -9,11 +9,13 @@ class Admin extends CI_Controller
         $this->load->library('form_validation');
         $this->load->helper('url');
         $this->load->model('Admin_model');
+        $this->load->model('Home_model');
 
         $this->user = $this->Admin_model->get_session();
         if ($this->session->userdata('email') == null) {
             redirect(base_url('home/login'));
         }
+        $this->warkop_settings = $this->Home_model->warkop_settings();
     }
 
     function load_view($id = null, $data = null)
@@ -21,11 +23,11 @@ class Admin extends CI_Controller
         if ($id == null) {
             redirect(base_url('admin'));
         } else {
-            $data['title'] = 'NGOPI - ' . ucwords($id);
+            $data['title'] = $this->warkop_settings['name'] . ' - ' . ucwords($id);
 
             $this->load->view('admin/_include/head', $data);
             $this->load->view('admin/_include/side');
-            $this->load->view('admin/_include/nav', $this->user);
+            $this->load->view('admin/_include/nav');
             $this->load->view("admin/$id");
             $this->load->view('admin/_include/foot');
         }
@@ -43,6 +45,34 @@ class Admin extends CI_Controller
         } else {
             $data['all_user'] = $this->Admin_model->getAllUser();
             $this->load_view('user', $data);
+        }
+    }
+
+    public function settings()
+    {
+        if ($this->user['role'] != 1) {
+            redirect(base_url('admin'));
+        } else {
+            if ($this->input->post('set_settings') !== null) {
+                $name = $this->input->post('nama_toko');
+                $quotes = $this->input->post('quote_toko');
+                $place = $this->input->post('alamat_toko');
+                $phone = $this->input->post('telepon_toko');
+                $data = array(
+                    'name' => $name,
+                    'quotes' => $quotes,
+                    'place' => $place,
+                    'phone' => $phone
+                );
+                $this->db->where('id', 1);
+                $this->db->update('warkop_settings', $data);
+                redirect('admin/settings');
+            } else {
+                $data['highlight'] = $this->Home_model->getHighlight();
+                $data['schedule'] = $this->Home_model->getSchedule();
+                $data['all_user'] = $this->Admin_model->getAllUser();
+                $this->load_view('settings', $data);
+            }
         }
     }
 

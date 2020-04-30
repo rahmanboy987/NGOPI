@@ -3,7 +3,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">NGOPI</div>
+        <div class="sidebar-brand-text mx-3"><?= $this->warkop_settings['name'] ?></div>
     </a>
     <hr class="sidebar-divider my-0">
     <li class="nav-item <?php if (current_url() == base_url('admin')) echo 'active' ?>">
@@ -55,8 +55,8 @@
             <i class="fas fa-fw fa-cash-register"></i>
             <span>Kasir</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item <?php if (current_url() == base_url('admin/settings')) echo 'active' ?>">
+        <a class="nav-link" href="<?= base_url() ?>admin/settings">
             <i class="fas fa-fw fa-cog"></i>
             <span>Settings</span></a>
     </li>

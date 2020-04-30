@@ -30,7 +30,7 @@
                     <div class="row">
                       <div class="col-sm">
                         <label>phone</label>
-                        <input type="text" name="phone_user" class="form-control" placeholder="Phone Number" equired>
+                        <input type="text" name="phone_user" class="form-control" placeholder="Phone Number" required>
                       </div>
                       <div class="col-sm">
                         <label>KTP</label>
@@ -100,7 +100,6 @@
                             </div>
 
                             <form role="form" action="<?= base_url() . 'admin/edit_user/' . $row['id'] ?>" method="post">
-
                               <div class="modal-body">
                                 <div class="card-body">
                                   <div class="form-group">

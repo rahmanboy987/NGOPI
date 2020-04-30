@@ -6,12 +6,18 @@ class Home extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('form_validation');
         $this->load->helper('url');
+        $this->load->model('Home_model');
+        $this->warkop_settings = $this->Home_model->warkop_settings();
     }
 
     public function index()
     {
-        $data['title'] = 'NGOPI - Home';
+        $data['highlight'] = $this->Home_model->getHighlight();
+        $data['schedule'] = $this->Home_model->getSchedule();
+        $data['title'] = $this->warkop_settings['name'] . ' - Home';
+
         $this->load->view('home/_include/head', $data);
         $this->load->view('home/index');
         $this->load->view('home/_include/foot');
@@ -19,7 +25,8 @@ class Home extends CI_Controller
 
     public function menu()
     {
-        $data['title'] = 'NGOPI - Menu';
+        $data['settings'] = $this->Home_model->warkop_settings();
+        $data['title'] = $this->warkop_settings['name'] . ' - Menu';
         $this->load->view('home/_include/head', $data);
         $this->load->view('home/menu');
         $this->load->view('home/_include/foot');
@@ -30,7 +37,7 @@ class Home extends CI_Controller
         if ($this->session->userdata('email')) {
             redirect('admin');
         } else {
-            $data['title'] = 'NGOPI - Login';
+            $data['title'] = $this->warkop_settings['name'] . ' - Login';
             $this->load->view('auth/login');
         }
     }
@@ -57,7 +64,7 @@ class Home extends CI_Controller
 
     public function forgot()
     {
-        $data['title'] = 'NGOPI - Forgot Password';
+        $data['title'] = $this->warkop_settings['name'] . ' - Forgot Password';
         $this->load->view('auth/forgot');
     }
 }
