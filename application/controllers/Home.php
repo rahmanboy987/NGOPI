@@ -57,11 +57,6 @@ class Home extends CI_Controller
         $this->load->view('home/_include/foot');
     }
 
-    public function tampil_menu()
-    {
-        $this->load->view('home/menu', $data);
-    }
-
     public function aku($id_menu)
     {
         if (!$this->session->userdata("keranjang")) {
