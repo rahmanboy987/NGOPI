@@ -26,7 +26,7 @@
                     <td><?php echo $no++ ?></td>
                     <td><?php echo $u['nama']; ?></td>
                     <td><?php echo $u['harga']; ?></td>
-                    <td><a class="btn btn-primary" href="<?= base_url(); ?>home/menu/<?= $u['id_menu']; ?>">Pesan</a></td>
+                    <td><a class="btn btn-primary" href="<?= base_url(); ?>home/aku/<?= $u['id_menu']; ?>">Pesan</a></td>
                   </tr>
 
                 <?php } ?>
