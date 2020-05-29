@@ -2,10 +2,11 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <div class="cta-inner text-center rounded">
+
+
+            <div class="tabel1" style="background-color: brown;">
             <h4 class="section-heading mb-4">
-            <table class="table">
-            <div class="table-responsive">
+
               <table class="table table-striped table-sm">
               <thead>
                 <tr>
@@ -14,26 +15,33 @@
                   <th>Harga</th>
                   <th>Pilihan</th>
                 </tr>
+                </thead>
+
                 <?php 
                   $no = 1;
                   foreach($menu as $u){ 
                   ?>
+
                   <tr>
                     <td><?php echo $no++ ?></td>
-                    <td><?php echo $u->nama ?></td>
-                    <td><?php echo $u->harga ?></td>
-                    <td><a href="<?= base_url(); ?>home/aku/<?= $data['id_menu']; ?>">Pesan</a></td>
-                    </td>
+                    <td><?php echo $u['nama']; ?></td>
+                    <td><?php echo $u['harga']; ?></td>
+                    <td><a class="btn btn-primary" href="<?= base_url(); ?>home/menu/<?= $u['id_menu']; ?>">Pesan</a></td>
                   </tr>
+
                 <?php } ?>
-              </thead>
+
               </table>
-            </div>
-          </table>
-          <table >
+              </h4>
+              </div>
+
+
             <tr>
-               <td><h2><a href="<?= base_url('home/daftar'); ?>">Daftar Pesanan</a></h2></td>             
+               <td><h2><a href="<?= base_url('home/pesanan'); ?>">Daftar Pesanan</a></h2></td>             
             </tr>
-          </table>
-          </h4>
+          
+
+        </div>
+      </div>
+    </div>
   </section>
