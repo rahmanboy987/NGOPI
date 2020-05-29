@@ -19,39 +19,19 @@
     <hr class="sidebar-divider">
     <div class="sidebar-heading">Tools</div>
     <?php if ($this->user['role'] == 1) { ?>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <li class="nav-item <?php if (current_url() == base_url('admin/report')) echo 'active' ?>">
+            <a class="nav-link" href="<?= base_url() ?>admin/report">
                 <i class="fas fa-fw fa-file-alt"></i>
-                <span>Laporan</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Management Laporan:</h6>
-                    <a class="collapse-item" href="#">Laporan Pemasukan</a>
-                    <a class="collapse-item" href="#">Laporan Pengeluaran</a>
-                    <a class="collapse-item" href="#">Laporan Pendapatan</a>
-                    <a class="collapse-item" href="#">Laporan Produk</a>
-                    <a class="collapse-item" href="#">Laporan Diskon</a>
-                </div>
-            </div>
+                <span>Laporan</span></a>
         </li>
     <?php } ?>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+
+    <li class="nav-item <?php if (current_url() == base_url('admin/stock')) echo 'active' ?>">
+        <a class="nav-link" href="<?= base_url() ?>admin/stock">
             <i class="fas fa-fw fa-dolly-flatbed"></i>
-            <span>Produk</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Management Produk:</h6>
-                <a class="collapse-item" href="#">Stock Produk</a>
-                <a class="collapse-item" href="#">Kategori Produk</a>
-                <a class="collapse-item" href="#">Paket</a>
-                <a class="collapse-item" href="#">Promo</a>
-                <a class="collapse-item" href="#">Pemesanan Produk</a>
-            </div>
-        </div>
+            <span>Stock Produk</span></a>
     </li>
+
     <?php if ($this->user['role'] == 1) { ?>
         <li class="nav-item <?php if (current_url() == base_url('admin/user')) echo 'active' ?>">
             <a class="nav-link" href="<?= base_url() ?>admin/user">
@@ -59,11 +39,13 @@
                 <span>Karyawan</span></a>
         </li>
     <?php } ?>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+
+    <li class="nav-item <?php if (current_url() == base_url('admin/kasir')) echo 'active' ?>">
+        <a class="nav-link" href="<?= base_url() ?>admin/kasir">
             <i class="fas fa-fw fa-cash-register"></i>
             <span>Kasir</span></a>
     </li>
+
     <?php if ($this->user['role'] == 1) { ?>
         <li class="nav-item <?php if (current_url() == base_url('admin/settings')) echo 'active' ?>">
             <a class="nav-link" href="<?= base_url() ?>admin/settings">

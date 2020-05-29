@@ -38,6 +38,20 @@ class Admin extends CI_Controller
         $this->load_view('index');
     }
 
+    public function report()
+    {
+        if ($this->user['role'] != 1) {
+            redirect(base_url('admin'));
+        } else {
+            $this->load_view('report');
+        }
+    }
+
+    public function stock()
+    {
+        $this->load_view('stock');
+    }
+
     public function user()
     {
         if ($this->user['role'] != 1) {
@@ -46,6 +60,11 @@ class Admin extends CI_Controller
             $data['all_user'] = $this->Admin_model->getAllUser();
             $this->load_view('user', $data);
         }
+    }
+
+    public function kasir()
+    {
+        $this->load_view('kasir');
     }
 
     public function settings()
@@ -74,6 +93,11 @@ class Admin extends CI_Controller
                 $this->load_view('settings', $data);
             }
         }
+    }
+
+    public function profile()
+    {
+        $this->load_view('profile');
     }
 
     public function add_user()
