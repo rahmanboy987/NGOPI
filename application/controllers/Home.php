@@ -55,12 +55,12 @@ class Home extends CI_Controller
         if (!$this->session->userdata("keranjang")) {
             $temp[] = $id_menu;
             $this->session->set_userdata('keranjang', $temp);
-            redirect('menu');
+            redirect('home/pesanan');
         } else {
             $temp = $this->session->userdata("keranjang");
             array_push($temp, $id_menu);
             $this->session->set_userdata('keranjang',$temp);
-            redirect('menu');
+            redirect('home/pesanan');
         }
     }
 	
