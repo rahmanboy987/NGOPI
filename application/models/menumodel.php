@@ -22,5 +22,11 @@ class Menumodel extends CI_Model{
 		}
 	endforeach;
 	return $list;
-}
+	}
+	
+	public function hapus($id_menu){
+    	$this->db->where('id_menu',$id_menu);
+    	$this->db->delete('menu');
+    	return true;
+	}
 }
