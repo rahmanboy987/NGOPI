@@ -63,7 +63,11 @@ class Home extends CI_Controller
             redirect('home/pesanan');
         }
     }
-	
+    public function hapus($id_menu){
+        $id_menu = $this->input->post('id_menu',true);
+        $this->menumodel->hapus($id_menu);
+        redirect('home/menu');
+    }
 
     public function login()
     {
