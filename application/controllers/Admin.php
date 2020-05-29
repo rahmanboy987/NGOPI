@@ -49,7 +49,8 @@ class Admin extends CI_Controller
 
     public function stock()
     {
-        $this->load_view('stock');
+        $data['all_menu'] = $this->Admin_model->getAllMenu();
+        $this->load_view('stock', $data);
     }
 
     public function user()
@@ -98,6 +99,45 @@ class Admin extends CI_Controller
     public function profile()
     {
         $this->load_view('profile');
+    }
+
+    public function add_menu()
+    {
+        $nama_produk = $this->input->post('nama_menu');
+        $harga_jual = $this->input->post('harga_menu');
+        $stock_produk = $this->input->post('stock_menu');
+        $jenis_produk = $this->input->post('jenis_menu');
+        $data = array(
+            'nama_produk' => $nama_produk,
+            'harga_jual' => $harga_jual,
+            'stock_produk' => $stock_produk,
+            'jenis_produk' => $jenis_produk
+        );
+        $this->db->insert('produk', $data);
+        redirect('admin/stock');
+    }
+
+    public function edit_menu($id)
+    {
+        $nama_produk = $this->input->post('nama_produk');
+        $harga_jual = $this->input->post('harga_jual');
+        $stock_produk = $this->input->post('stock_produk');
+        $jenis_produk = $this->input->post('jenis_menu');
+        $data = array(
+            'nama_produk' => $nama_produk,
+            'harga_jual' => $harga_jual,
+            'stock_produk' => $stock_produk,
+            'jenis_produk' => $jenis_produk
+        );
+        $this->db->where('id_produk', $id);
+        $this->db->update('produk', $data);
+        redirect('admin/stock');
+    }
+
+    public function hapusMenu($id)
+    {
+        $this->Admin_model->hapusMenu($id);
+        redirect('admin/stock');
     }
 
     public function add_user()

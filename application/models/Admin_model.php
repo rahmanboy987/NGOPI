@@ -8,9 +8,20 @@ class Admin_model extends CI_Model
         return $query->row_array();
     }
 
+    public function getAllMenu()
+    {
+        return $this->db->get('produk');
+    }
+
     public function getAllUser()
     {
         return $this->db->get('user');
+    }
+
+    public function hapusMenu($id)
+    {
+        $this->db->where('id_produk', $id);
+        $this->db->delete('produk');
     }
 
     public function hapusUser($id)
