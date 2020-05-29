@@ -27,11 +27,43 @@ class Home extends CI_Controller
     {
         $data['settings'] = $this->Home_model->warkop_settings();
         $data['title'] = $this->warkop_settings['name'] . ' - Menu';
-		$data['menu'] = $this->menumodel->tampil_menu()->result();
+        $data['menu'] = $this->menumodel->tampil_menu();
         $this->load->view('home/_include/head', $data);
         $this->load->view('home/menu');
         $this->load->view('home/_include/foot');
     }
+	
+    public function pesanan()
+    {
+        if($this->session->userdata("keranjang")){
+            $data['io'] = $this->menumodel->daftar();
+        } else {
+            $data['io'] = 1;
+        }
+        $data['title'] = 'NGOPI - pesanan';
+        $this->load->view('home/_include/head', $data);
+        $this->load->view('home/pesanan');
+        $this->load->view('home/_include/foot');
+    }
+
+    public function tampil_menu(){
+        $this->load->view('home/menu',$data);
+    }
+	
+    public function aku($id_menu)
+    {
+        if (!$this->session->userdata("keranjang")) {
+            $temp[] = $id_menu;
+            $this->session->set_userdata('keranjang', $temp);
+            redirect('menu');
+        } else {
+            $temp = $this->session->userdata("keranjang");
+            array_push($temp, $id_menu);
+            $this->session->set_userdata('keranjang',$temp);
+            redirect('menu');
+        }
+    }
+	
 
     public function login()
     {
