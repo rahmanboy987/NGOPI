@@ -36,6 +36,10 @@
                         <a class="nav-link text-uppercase text-expanded" href="<?= base_url() ?>home/menu">Menu
                         </a>
                     </li>
+                    <li class="nav-item <?php if (current_url() == base_url('home/menu2')) echo "active" ?> px-lg-4">
+                        <a class="nav-link text-uppercase text-expanded" href="<?= base_url() ?>home/menu2">Menu<sup>2</sup>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

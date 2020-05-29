@@ -10,6 +10,7 @@ class Home extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Home_model');
         $this->warkop_settings = $this->Home_model->warkop_settings();
+        $this->load->model('menumodel');
     }
 
     public function index()
@@ -32,10 +33,20 @@ class Home extends CI_Controller
         $this->load->view('home/menu');
         $this->load->view('home/_include/foot');
     }
-	
+
+    public function menu2()
+    {
+        $data['settings'] = $this->Home_model->warkop_settings();
+        $data['title'] = $this->warkop_settings['name'] . ' - Menu2';
+        $data['menu'] = $this->menumodel->tampil_menu();
+        $this->load->view('home/_include/head', $data);
+        $this->load->view('home/menu2');
+        $this->load->view('home/_include/foot');
+    }
+
     public function pesanan()
     {
-        if($this->session->userdata("keranjang")){
+        if ($this->session->userdata("keranjang")) {
             $data['io'] = $this->menumodel->daftar();
         } else {
             $data['io'] = 1;
@@ -46,10 +57,11 @@ class Home extends CI_Controller
         $this->load->view('home/_include/foot');
     }
 
-    public function tampil_menu(){
-        $this->load->view('home/menu',$data);
+    public function tampil_menu()
+    {
+        $this->load->view('home/menu', $data);
     }
-	
+
     public function aku($id_menu)
     {
         if (!$this->session->userdata("keranjang")) {
@@ -59,12 +71,13 @@ class Home extends CI_Controller
         } else {
             $temp = $this->session->userdata("keranjang");
             array_push($temp, $id_menu);
-            $this->session->set_userdata('keranjang',$temp);
+            $this->session->set_userdata('keranjang', $temp);
             redirect('home/pesanan');
         }
     }
-    public function hapus($id_menu){
-        $id_menu = $this->input->post('id_menu',true);
+    public function hapus($id_menu)
+    {
+        $id_menu = $this->input->post('id_menu', true);
         $this->menumodel->hapus($id_menu);
         redirect('home/menu');
     }
