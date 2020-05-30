@@ -6,6 +6,7 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
         $this->load->library('form_validation');
         $this->load->helper('url');
         $this->load->model('Admin_model');
@@ -15,6 +16,7 @@ class Admin extends CI_Controller
         if ($this->session->userdata('email') == null) {
             redirect(base_url('home/login'));
         }
+
         $this->warkop_settings = $this->Home_model->warkop_settings();
     }
 
@@ -43,7 +45,8 @@ class Admin extends CI_Controller
         if ($this->user['role'] != 1) {
             redirect(base_url('admin'));
         } else {
-            $this->load_view('report');
+            $data['all_penjualan'] = $this->Admin_model->getAllPenjualan();
+            $this->load_view('report', $data);
         }
     }
 
@@ -65,7 +68,9 @@ class Admin extends CI_Controller
 
     public function kasir()
     {
-        $this->load_view('kasir');
+        $data['all_menu'] = $this->Admin_model->getAllMenu();
+        $data['all_keranjang'] = $this->Admin_model->getAllKeranjang($this->user['id']);
+        $this->load_view('kasir', $data);
     }
 
     public function settings()
@@ -184,6 +189,76 @@ class Admin extends CI_Controller
         $this->Admin_model->hapusUser($id);
         $this->session->set_flashdata('flash', 'Dihapus');
         redirect('admin/user');
+    }
+
+    public function add_keranjang()
+    {
+        $id_user = $this->user['id'];
+        $id_barang = $this->input->post('id_barang');
+        $jumlah_jual = $this->input->post('jumlah_jual');
+        $data = array(
+            'id_user' => $id_user,
+            'id_barang' => $id_barang,
+            'jumlah_jual' => $jumlah_jual
+        );
+        $this->db->insert('keranjang', $data);
+        redirect('admin/kasir');
+    }
+
+    public function edit_keranjang($id)
+    {
+        $jumlah_jual = $this->input->post('jumlah_jual');
+        $data = array(
+            'jumlah_jual' => $jumlah_jual
+        );
+        $this->db->where('id_keranjang', $id);
+        $this->db->update('keranjang', $data);
+        redirect('admin/kasir');
+    }
+
+
+
+    public function bayar_pesanan()
+    {
+        $all_keranjang = $this->Admin_model->getAllKeranjang($this->user['id']);
+
+        $id_keluar = uniqid();
+        $id_user = $this->user['id'];
+        $total_harga = $this->input->post('total_harga');
+        $data = array(
+            'id_keluar' => $id_keluar,
+            'id_user' => $id_user,
+            'waktu_keluar' => date("Y-m-d H:i:s"),
+            'total_harga' => $total_harga
+        );
+        $this->db->insert('penjualan_keluar', $data);
+
+        foreach ($all_keranjang->result_array() as $row) {
+            $data = array(
+                'id_keluar' => $id_keluar,
+                'id_barang' => $row['id_produk'],
+                'jumlah_keluar' => $row['jumlah_jual'],
+                'subtotal_keluar' => $row['harga_jual'] * $row['jumlah_jual']
+            );
+            $this->db->insert('detail_keluar', $data);
+        }
+
+        $this->Admin_model->resetPesanan($this->user['id']);
+        redirect('admin/kasir');
+    }
+
+    public function hapusPesanan($id)
+    {
+        $this->Admin_model->hapusPesanan($id);
+        $this->session->set_flashdata('flash', 'Dihapus');
+        redirect('admin/kasir');
+    }
+
+    public function resetPesanan()
+    {
+        $this->Admin_model->resetPesanan($this->user['id']);
+        $this->session->set_flashdata('flash', 'Dihapus');
+        redirect('admin/kasir');
     }
 
     public function edit_schedule($id)

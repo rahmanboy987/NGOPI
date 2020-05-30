@@ -3,7 +3,7 @@
   <p class="mb-4">User adalah seorang karyawan ataupun pemilik warkop tersebut.</p>
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">DataTabel User</h6>
+      <h6 class="m-0 font-weight-bold text-primary">DataTable User</h6>
     </div>
     <div class="card-body py-3">
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">Tambah User</button>
