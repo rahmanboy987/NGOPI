@@ -46,6 +46,8 @@ class Admin extends CI_Controller
             redirect(base_url('admin'));
         } else {
             $data['all_penjualan'] = $this->Admin_model->getAllPenjualan();
+            $data['all_pembelian'] = $this->Admin_model->getAllPembelian();
+            $data['all_user'] = $this->Admin_model->getAllUser();
             $this->load_view('report', $data);
         }
     }
@@ -103,7 +105,23 @@ class Admin extends CI_Controller
 
     public function profile()
     {
-        $this->load_view('profile');
+        $this->load_view('profile', $this->user);
+    }
+
+    public function add_pembelian()
+    {
+        $id_user = $this->input->post('id_user');
+        $waktu_masuk = date("Y-m-d H:i:s");
+        $total_harga = $this->input->post('total_beli');
+        $keterangan = $this->input->post('keterangan');
+        $data = array(
+            'id_user' => $id_user,
+            'waktu_masuk' => $waktu_masuk,
+            'total_harga' => $total_harga,
+            'keterangan' => $keterangan
+        );
+        $this->db->insert('pembelian_masuk', $data);
+        redirect('admin/report');
     }
 
     public function add_menu()
@@ -182,6 +200,23 @@ class Admin extends CI_Controller
         $this->db->where('id', $id);
         $this->db->update('user', $data);
         redirect('admin/user');
+    }
+
+    public function edit_profile()
+    {
+        $nama = $this->input->post('nama_user');
+        $email = $this->input->post('email_user');
+        $phone = $this->input->post('phone_user');
+        $ktp = $this->input->post('ktp_user');
+        $data = array(
+            'nama' => $nama,
+            'email' => $email,
+            'phone' => $phone,
+            'ktp' => $ktp
+        );
+        $this->db->where('id', $this->user['id']);
+        $this->db->update('user', $data);
+        redirect('admin/profile');
     }
 
     public function hapusUser($id)

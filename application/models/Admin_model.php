@@ -30,6 +30,12 @@ class Admin_model extends CI_Model
         return $query;
     }
 
+    public function getAllPembelian()
+    {
+        $query = $this->db->query("SELECT pembelian_masuk.id_masuk, pembelian_masuk.waktu_masuk, user.nama, pembelian_masuk.total_harga, pembelian_masuk.keterangan FROM pembelian_masuk LEFT JOIN user ON pembelian_masuk.id_user=user.id");
+        return $query;
+    }
+
     public function hapusMenu($id)
     {
         $this->db->where('id_produk', $id);
