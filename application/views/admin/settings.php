@@ -302,7 +302,7 @@
     <div class="col-lg-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Laporan Pembelian Masuk</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Home Menu Content</h6>
             </div>
             <div class="card-body">
                 <form role="form" action="<?= base_url() ?>admin/add_homeMenu" method="post" autocomplete="off">
