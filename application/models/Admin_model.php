@@ -7,9 +7,16 @@ class Admin_model extends CI_Model
         $query = $this->db->get_where('user', ['email' => $this->session->userdata('email')]);
         return $query->row_array();
     }
-    public function get_user($id, $pass)
+    public function get_user($id)
     {
-        $query = $this->db->query("SELECT * from `user` WHERE id='$id' AND pass='$pass'");
+        $user_id = $this->user['id'];
+        $query = $this->db->query("SELECT * from `user` WHERE id='$user_id' AND pass='$id'");
+        return $query->row_array();
+    }
+
+    public function get_Menu($id)
+    {
+        $query = $this->db->get_where('produk', array('id_produk' => $id));
         return $query->row_array();
     }
 
@@ -89,13 +96,28 @@ class Admin_model extends CI_Model
         $this->db->delete('user');
     }
 
-    public function hapusPesanan($id)
+    public function hapusKeranjang($id)
     {
         $this->db->where('id_keranjang', $id);
         $this->db->delete('keranjang');
     }
 
-    public function resetPesanan($id)
+    public function hapusPembelian($id)
+    {
+        $this->db->where('id_masuk', $id);
+        $this->db->delete('pembelian_masuk');
+    }
+
+    public function hapusPenjualan($id)
+    {
+        $this->db->where('id_keluar', $id);
+        $this->db->delete('penjualan_keluar');
+
+        $this->db->where('id_keluar', $id);
+        $this->db->delete('detail_keluar');
+    }
+
+    public function resetKeranjang($id)
     {
         $this->db->where('id_user', $id);
         $this->db->delete('keranjang');

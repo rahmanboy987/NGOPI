@@ -36,11 +36,13 @@ class Admin extends CI_Controller
         }
     }
 
+    // ============================ INDEX FUNCTION ==================================
     public function index()
     {
         $this->load_view('index');
     }
 
+    // ============================ REPORT FUNCTION ==================================
     public function report()
     {
         if ($this->user['role'] != 1) {
@@ -58,64 +60,6 @@ class Admin extends CI_Controller
         }
     }
 
-    public function stock()
-    {
-        $data['all_menu'] = $this->Admin_model->getAllMenu();
-        $this->load_view('stock', $data);
-    }
-
-    public function user()
-    {
-        if ($this->user['role'] != 1) {
-            redirect(base_url('admin'));
-        } else {
-            $data['all_user'] = $this->Admin_model->getAllUser();
-            $this->load_view('user', $data);
-        }
-    }
-
-    public function kasir()
-    {
-        $data['all_menu'] = $this->Admin_model->getAllMenu();
-        $data['all_keranjang'] = $this->Admin_model->getAllKeranjang($this->user['id']);
-        $this->load_view('kasir', $data);
-    }
-
-    public function settings()
-    {
-        if ($this->user['role'] != 1) {
-            redirect(base_url('admin'));
-        } else {
-            if ($this->input->post('set_settings') !== null) {
-                $name = $this->input->post('nama_toko');
-                $quotes = $this->input->post('quote_toko');
-                $place = $this->input->post('alamat_toko');
-                $phone = $this->input->post('telepon_toko');
-                $data = array(
-                    'name' => $name,
-                    'quotes' => $quotes,
-                    'place' => $place,
-                    'phone' => $phone
-                );
-                $this->db->where('id', 1);
-                $this->db->update('warkop_settings', $data);
-                redirect('admin/settings');
-            } else {
-                $data['all_homeMenu'] = $this->Admin_model->getAllHomeMenu();
-                $data['highlight'] = $this->Home_model->getHighlight();
-                $data['schedule'] = $this->Home_model->getSchedule();
-                $data['all_user'] = $this->Admin_model->getAllUser();
-                $data['all_menu'] = $this->Admin_model->getAllMenu();
-                $this->load_view('settings', $data);
-            }
-        }
-    }
-
-    public function profile()
-    {
-        $this->load_view('profile', $this->user);
-    }
-
     public function add_pembelian()
     {
         $id_user = $this->input->post('id_user');
@@ -129,7 +73,29 @@ class Admin extends CI_Controller
             'keterangan' => $keterangan
         );
         $this->db->insert('pembelian_masuk', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Pembelian</b> Berhasil <b>Ditambah</b>!</div>');
         redirect('admin/report');
+    }
+
+    public function hapusPembelian($id)
+    {
+        $this->Admin_model->hapusPembelian($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Pembelian</b> Berhasil <b>Dihapus</b>!</div>');
+        redirect('admin/report');
+    }
+
+    public function hapusPenjualan($id)
+    {
+        $this->Admin_model->hapusPenjualan($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Penjualan</b> Berhasil <b>Dihapus</b>!</div>');
+        redirect('admin/report');
+    }
+
+    // ============================ STOCK FUNCTION ==================================
+    public function stock()
+    {
+        $data['all_menu'] = $this->Admin_model->getAllMenu();
+        $this->load_view('stock', $data);
     }
 
     public function add_menu()
@@ -145,6 +111,7 @@ class Admin extends CI_Controller
             'jenis_produk' => $jenis_produk
         );
         $this->db->insert('produk', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Menu</b> Berhasil <b>Ditambahkan</b>!</div>');
         redirect('admin/stock');
     }
 
@@ -162,13 +129,26 @@ class Admin extends CI_Controller
         );
         $this->db->where('id_produk', $id);
         $this->db->update('produk', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Menu</b> Berhasil <b>Diubah</b>!</div>');
         redirect('admin/stock');
     }
 
     public function hapusMenu($id)
     {
         $this->Admin_model->hapusMenu($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Menu</b> Berhasil <b>Dihapus</b>!</div>');
         redirect('admin/stock');
+    }
+
+    // ============================ USER FUNCTION ==================================
+    public function user()
+    {
+        if ($this->user['role'] != 1) {
+            redirect(base_url('admin'));
+        } else {
+            $data['all_user'] = $this->Admin_model->getAllUser();
+            $this->load_view('user', $data);
+        }
     }
 
     public function add_user()
@@ -188,6 +168,7 @@ class Admin extends CI_Controller
             'role' => $role
         );
         $this->db->insert('user', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>User</b> Berhasil <b>Ditambahkan</b>!</div>');
         redirect('admin/user');
     }
 
@@ -207,49 +188,23 @@ class Admin extends CI_Controller
         );
         $this->db->where('id', $id);
         $this->db->update('user', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>User</b> Berhasil <b>Diubah</b>!</div>');
         redirect('admin/user');
-    }
-
-    public function edit_profile()
-    {
-        $nama = $this->input->post('nama_user');
-        $email = $this->input->post('email_user');
-        $phone = $this->input->post('phone_user');
-        $ktp = $this->input->post('ktp_user');
-        $data = array(
-            'nama' => $nama,
-            'email' => $email,
-            'phone' => $phone,
-            'ktp' => $ktp
-        );
-        $this->db->where('id', $this->user['id']);
-        $this->db->update('user', $data);
-        redirect('admin/profile');
-    }
-
-    public function edit_password()
-    {
-        $old_pass = password_hash($this->input->post('old_pass'), PASSWORD_DEFAULT);
-        $new_pass = password_hash($this->input->post('new_pass'), PASSWORD_DEFAULT);
-        $retype_newpass = password_hash($this->input->post('retype_newpass'), PASSWORD_DEFAULT);
-
-        if ($this->Admin_model->get_user($this->user['id'], $old_pass)) {
-            if ($new_pass == $retype_newpass) {
-                $data = array(
-                    'pass' => $new_pass
-                );
-                $this->db->where('id', $this->user['id']);
-                $this->db->update('user', $data);
-            }
-        }
-        redirect('admin/profile');
     }
 
     public function hapusUser($id)
     {
         $this->Admin_model->hapusUser($id);
-        $this->session->set_flashdata('flash', 'Dihapus');
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>User</b> Berhasil <b>Dihapus</b>!</div>');
         redirect('admin/user');
+    }
+
+    // ============================ KASIR FUNCTION ==================================
+    public function kasir()
+    {
+        $data['all_menu'] = $this->Admin_model->getAllMenu();
+        $data['all_keranjang'] = $this->Admin_model->getAllKeranjang($this->user['id']);
+        $this->load_view('kasir', $data);
     }
 
     public function add_keranjang()
@@ -263,6 +218,7 @@ class Admin extends CI_Controller
             'jumlah_jual' => $jumlah_jual
         );
         $this->db->insert('keranjang', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Menu</b> Berhasil <b>Ditambahkan</b>!</div>');
         redirect('admin/kasir');
     }
 
@@ -274,6 +230,21 @@ class Admin extends CI_Controller
         );
         $this->db->where('id_keranjang', $id);
         $this->db->update('keranjang', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Jumlah</b> Berhasil <b>Diubah</b>!</div>');
+        redirect('admin/kasir');
+    }
+
+    public function hapusKeranjang($id)
+    {
+        $this->Admin_model->hapusKeranjang($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Menu</b> Berhasil <b>Dihapus</b>!</div>');
+        redirect('admin/kasir');
+    }
+
+    public function resetKeranjang()
+    {
+        $this->Admin_model->resetKeranjang($this->user['id']);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Keranjang</b> Berhasil <b>Direset</b>!</div>');
         redirect('admin/kasir');
     }
 
@@ -300,24 +271,50 @@ class Admin extends CI_Controller
                 'subtotal_keluar' => $row['harga_jual'] * $row['jumlah_jual']
             );
             $this->db->insert('detail_keluar', $data);
+
+            $get_menu = $this->Admin_model->get_Menu($row['id_produk']);
+            $data = array(
+                'stock_produk' => $get_menu['stock_produk'] - $row['jumlah_jual']
+            );
+            $this->db->where('id_produk', $row['id_produk']);
+            $this->db->update('produk', $data);
         }
 
-        $this->Admin_model->resetPesanan($this->user['id']);
+        $this->Admin_model->resetKeranjang($this->user['id']);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Pesanan</b> Dibayar!</div>');
         redirect('admin/kasir');
     }
 
-    public function hapusPesanan($id)
+    // ============================ SETTINGS FUNCTION ==================================
+    public function settings()
     {
-        $this->Admin_model->hapusPesanan($id);
-        $this->session->set_flashdata('flash', 'Dihapus');
-        redirect('admin/kasir');
-    }
-
-    public function resetPesanan()
-    {
-        $this->Admin_model->resetPesanan($this->user['id']);
-        $this->session->set_flashdata('flash', 'Dihapus');
-        redirect('admin/kasir');
+        if ($this->user['role'] != 1) {
+            redirect(base_url('admin'));
+        } else {
+            if ($this->input->post('set_settings') !== null) {
+                $name = $this->input->post('nama_toko');
+                $quotes = $this->input->post('quote_toko');
+                $place = $this->input->post('alamat_toko');
+                $phone = $this->input->post('telepon_toko');
+                $data = array(
+                    'name' => $name,
+                    'quotes' => $quotes,
+                    'place' => $place,
+                    'phone' => $phone
+                );
+                $this->db->where('id', 1);
+                $this->db->update('warkop_settings', $data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Set Settings</b> Berhasil <b>Diperbaharui</b>!</div>');
+                redirect('admin/settings');
+            } else {
+                $data['all_homeMenu'] = $this->Admin_model->getAllHomeMenu();
+                $data['highlight'] = $this->Home_model->getHighlight();
+                $data['schedule'] = $this->Home_model->getSchedule();
+                $data['all_user'] = $this->Admin_model->getAllUser();
+                $data['all_menu'] = $this->Admin_model->getAllMenu();
+                $this->load_view('settings', $data);
+            }
+        }
     }
 
     public function add_highlight()
@@ -335,8 +332,7 @@ class Admin extends CI_Controller
 
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload('foto')) {
-                echo 'upload gagal';
-                die();
+                $foto = '';
             } else {
                 $foto = $this->upload->data('file_name');
             };
@@ -350,6 +346,45 @@ class Admin extends CI_Controller
         );
 
         $this->db->insert('highlight', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Highlight</b> Berhasil <b>Ditambahkan</b>!</div>');
+        redirect('admin/settings');
+    }
+
+    public function delete_foto($id)
+    {
+        $data = array(
+            'photo' => ""
+        );
+
+        $this->db->where('id_highlight', $id);
+        $this->db->update('highlight', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Foto</b> Berhasil <b>Dihapus</b>!</div>');
+        redirect('admin/settings');
+    }
+
+    public function upload_foto($id)
+    {
+        $foto = $_FILES['foto'];
+        if ($foto != '') {
+            $config['file_name']        = uniqid();
+            $config['upload_path']      = './asset/img';
+            $config['allowed_types']    = 'gif|jpg|png';
+            $config['max_size']         = 2048;
+
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('foto')) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert"><b>Foto</b> Gagal <b>Ditambahkan</b>!</div>');
+            } else {
+                $foto = $this->upload->data('file_name');
+            };
+        }
+        $data = array(
+            'photo' => $foto
+        );
+
+        $this->db->where('id_highlight', $id);
+        $this->db->update('highlight', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Foto</b> Berhasil <b>Ditambahkan</b>!</div>');
         redirect('admin/settings');
     }
 
@@ -371,49 +406,14 @@ class Admin extends CI_Controller
 
         $this->db->where('id_highlight', $id);
         $this->db->update('highlight', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Highlight</b> Berhasil <b>Diubah</b>!</div>');
         redirect('admin/settings');
     }
 
     public function delete_highlight($id)
     {
         $this->Admin_model->hapusHighlight($id);
-        redirect('admin/settings');
-    }
-
-    public function upload_foto($id)
-    {
-        $foto = $_FILES['foto'];
-        if ($foto != '') {
-            $config['file_name']        = uniqid();
-            $config['upload_path']          = './asset/img';
-            $config['allowed_types']        = 'gif|jpg|png';
-            $config['max_size']             = 2048;
-
-            $this->load->library('upload', $config);
-            if (!$this->upload->do_upload('foto')) {
-                echo 'upload gagal';
-                die();
-            } else {
-                $foto = $this->upload->data('file_name');
-            };
-        }
-        $data = array(
-            'photo' => $foto
-        );
-
-        $this->db->where('id_highlight', $id);
-        $this->db->update('highlight', $data);
-        redirect('admin/settings');
-    }
-
-    public function delete_foto($id)
-    {
-        $data = array(
-            'photo' => ""
-        );
-
-        $this->db->where('id_highlight', $id);
-        $this->db->update('highlight', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Highlight</b> Berhasil <b>Dihapus</b>!</div>');
         redirect('admin/settings');
     }
 
@@ -427,6 +427,7 @@ class Admin extends CI_Controller
         );
         $this->db->where('id_schedule', $id);
         $this->db->update('schedule', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Schedule</b> Berhasil <b>Diubah</b>!</div>');
         redirect('admin/settings');
     }
 
@@ -438,6 +439,7 @@ class Admin extends CI_Controller
             );
             $this->db->insert('menu', $data);
         }
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Home Menu</b> Berhasil <b>Ditambahkan</b>!</div>');
         redirect('admin/settings');
     }
 
@@ -451,14 +453,64 @@ class Admin extends CI_Controller
         );
         $this->db->where('id_menu', $id);
         $this->db->update('menu', $data);
-
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Home Menu</b> Berhasil <b>Diubah</b>!</div>');
         redirect('admin/settings');
     }
 
     public function hapusHomeMenu($id)
     {
         $this->Admin_model->hapusHomeMenu($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Home Menu</b> Berhasil <b>Dihapus</b>!</div>');
         redirect('admin/settings');
+    }
+
+    // ============================ PROFILE FUNCTION ==================================
+    public function profile()
+    {
+        $this->load_view('profile', $this->user);
+    }
+
+    public function edit_profile()
+    {
+        $nama = $this->input->post('nama_user');
+        $email = $this->input->post('email_user');
+        $phone = $this->input->post('phone_user');
+        $ktp = $this->input->post('ktp_user');
+        $data = array(
+            'nama' => $nama,
+            'email' => $email,
+            'phone' => $phone,
+            'ktp' => $ktp
+        );
+        $this->db->where('id', $this->user['id']);
+        $this->db->update('user', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Profile</b> Berhasil <b>Diubah</b>!</div>');
+        redirect('admin/profile');
+    }
+
+    public function edit_password()
+    {
+        $old_pass = $this->input->post('old_pass');
+        $new_pass = $this->input->post('new_pass');
+        $retype_newpass = $this->input->post('retype_newpass');
+
+        $user = $this->db->get_where('user', ['id' => $this->user['id']])->row_array();
+
+        if (password_verify($old_pass, $user['pass'])) {
+            if ($new_pass == $retype_newpass) {
+                $data = array(
+                    'pass' => password_hash($new_pass, PASSWORD_DEFAULT)
+                );
+                $this->db->where('id', $this->user['id']);
+                $this->db->update('user', $data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Password</b> Berhasil <b>Diubah</b>!</div>');
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert"><b>Password Tidak Cocok</b>, Silahkan Coba Lagi Dengan Data Yang Sesuai!</div>');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert"><b>Password Tidak Cocok</b>, Silahkan Coba Lagi Dengan Data Yang Sesuai!</div>');
+        }
+        redirect('admin/profile');
     }
 
     public function logout()
@@ -467,6 +519,7 @@ class Admin extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('level');
 
-        redirect('admin');
+        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Logout</b> Berhasil!</div>');
+        redirect('home/login');
     }
 }

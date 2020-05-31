@@ -1,47 +1,23 @@
 <section class="page-section cta">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-9 mx-auto">
-
-
-            <div class="tabel1" style="background-color: brown;">
-            <h4 class="section-heading mb-4">
-
-              <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Nama Menu</th>
-                  <th>Harga</th>
-                  <th>Pilihan</th>
-                </tr>
-                </thead>
-
-                <?php 
-                  $no = 1;
-                  foreach($menu as $u){ 
-                  ?>
-
-                  <tr>
-                    <td><?php echo $no++ ?></td>
-                    <td><?php echo $u['nama']; ?></td>
-                    <td><?php echo $u['harga']; ?></td>
-                    <td><a class="btn btn-primary" href="<?= base_url(); ?>home/aku/<?= $u['id_menu']; ?>">Pesan</a></td>
-                  </tr>
-
-                <?php } ?>
-
-              </table>
-              </h4>
-              </div>
-
-
-            <tr>
-               <td><h2><a href="<?= base_url('home/pesanan'); ?>">Daftar Pesanan</a></h2></td>             
-            </tr>
-          
-
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-5">
+            <span class="section-heading-lower">MENU</span>
+          </h2>
+          <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+            <li class="list-unstyled-item list-hours-item d-flex">
+              <b>NAMA MENU</b> <span class="ml-auto"> <b>HARGA</b></span>
+            </li>
+            <?php foreach ($menu->result_array() as $row) {  ?>
+              <li class="list-unstyled-item list-hours-item d-flex">
+                <?= $row['nama_produk'] ?> <span class="ml-auto"><?= $row['harga_jual'] ?></span>
+              </li>
+            <?php } ?>
+          </ul>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>

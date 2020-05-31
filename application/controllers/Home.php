@@ -10,9 +10,9 @@ class Home extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Home_model');
         $this->warkop_settings = $this->Home_model->warkop_settings();
-        $this->load->model('menumodel');
     }
 
+    // ============================ INDEX FUNCTION ==================================
     public function index()
     {
         $data['highlight'] = $this->Home_model->getHighlight();
@@ -24,92 +24,50 @@ class Home extends CI_Controller
         $this->load->view('home/_include/foot');
     }
 
+    // ============================ MENU FUNCTION ==================================
     public function menu()
     {
         $data['settings'] = $this->Home_model->warkop_settings();
         $data['title'] = $this->warkop_settings['name'] . ' - Menu';
-        $data['menu'] = $this->menumodel->tampil_menu();
+        $data['menu'] = $this->Home_model->tampil_menu();
         $this->load->view('home/_include/head', $data);
         $this->load->view('home/menu');
         $this->load->view('home/_include/foot');
     }
 
-    public function menu2()
-    {
-        $data['settings'] = $this->Home_model->warkop_settings();
-        $data['title'] = $this->warkop_settings['name'] . ' - Menu2';
-        $data['menu'] = $this->Home_model->tampil_menu();
-        $this->load->view('home/_include/head', $data);
-        $this->load->view('home/menu2');
-        $this->load->view('home/_include/foot');
-    }
-
-    public function pesanan()
-    {
-        if ($this->session->userdata("keranjang")) {
-            $data['io'] = $this->menumodel->daftar();
-        } else {
-            $data['io'] = 1;
-        }
-        $data['title'] = 'NGOPI - pesanan';
-        $this->load->view('home/_include/head', $data);
-        $this->load->view('home/pesanan');
-        $this->load->view('home/_include/foot');
-    }
-
-    public function aku($id_menu)
-    {
-        if (!$this->session->userdata("keranjang")) {
-            $temp[] = $id_menu;
-            $this->session->set_userdata('keranjang', $temp);
-            redirect('home/pesanan');
-        } else {
-            $temp = $this->session->userdata("keranjang");
-            array_push($temp, $id_menu);
-            $this->session->set_userdata('keranjang', $temp);
-            redirect('home/pesanan');
-        }
-    }
-    public function hapus($id_menu)
-    {
-        $id_menu = $this->input->post('id_menu', true);
-        $this->menumodel->hapus($id_menu);
-        redirect('home/menu');
-    }
-
+    // ============================ LOGIN FUNCTION ==================================
     public function login()
     {
         if ($this->session->userdata('email')) {
             redirect('admin');
         } else {
-            $data['title'] = $this->warkop_settings['name'] . ' - Login';
-            $this->load->view('auth/login');
-        }
-    }
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+            $this->form_validation->set_rules('pass', 'Password', 'required');
 
-    public function signin()
-    {
-        $email = $this->input->post('email');
-        $pass = $this->input->post('pass');
-        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+            if ($this->form_validation->run() == false) {
+                $data['title'] = $this->warkop_settings['name'] . ' - Login';
+                $this->load->view('auth/login');
+            } else {
+                $email = $this->input->post('email');
+                $pass = $this->input->post('pass');
+                $user = $this->db->get_where('user', ['email' => $email])->row_array();
 
-        if ($user) {
-            if (password_verify($pass, $user['pass'])) {
-                $data = [
-                    'nama' => $user['nama'],
-                    'email' => $user['email'],
-                    'role' => $user['role']
-                ];
-                $this->session->set_userdata($data);
-                redirect('admin');
+                if ($user) {
+                    if (password_verify($pass, $user['pass'])) {
+                        $data = [
+                            'nama' => $user['nama'],
+                            'email' => $user['email'],
+                            'role' => $user['role']
+                        ];
+                        $this->session->set_userdata($data);
+                        $this->session->set_flashdata('message', '<div class="alert alert-success text-center" role="alert"><b>Login</b> Berhasil!</div>');
+                        redirect('admin');
+                    } else {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert"><b>Login</b> Gagal!</div>');
+                    }
+                }
+                redirect('home/login');
             }
         }
-        redirect('home/login');
-    }
-
-    public function forgot()
-    {
-        $data['title'] = $this->warkop_settings['name'] . ' - Forgot Password';
-        $this->load->view('auth/forgot');
     }
 }

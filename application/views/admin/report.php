@@ -1,6 +1,7 @@
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">Laporan Pemasukan dan pengeluaran</h1>
+    <?= $this->session->flashdata('message'); ?>
 
+    <h1 class="h3 mb-4 text-gray-800">Laporan Pemasukan dan pengeluaran</h1>
     <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -237,7 +238,7 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="laporanDetailLabel">Detail Laporan</h5>
+                                                            <h5 class="modal-title" id="laporanDetailLabel">Detail Pembelian Masuk</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -274,6 +275,15 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <a href="#" onclick="del_masuk<?= $row['id_masuk'] ?>()" class="btn btn-danger">Delete</a>
+                                                            <script>
+                                                                function del_masuk<?= $row['id_masuk'] ?>() {
+                                                                    var txt;
+                                                                    if (confirm("Anda yakin ingin mendelete data ini?")) {
+                                                                        window.location = "<?= base_url() . 'admin/hapusPembelian/' . $row['id_masuk'] ?>";
+                                                                    }
+                                                                }
+                                                            </script>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -318,7 +328,7 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="laporanDetailLabel">Edit Data</h5>
+                                                            <h5 class="modal-title" id="laporanDetailLabel">Detail Penjualan Keluar</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -363,6 +373,15 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <a href="#" onclick="del_keluar<?= $id_keluar ?>()" class="btn btn-danger">Delete</a>
+                                                            <script>
+                                                                function del_keluar<?= $id_keluar ?>() {
+                                                                    var txt;
+                                                                    if (confirm("Anda yakin ingin mendelete data ini?")) {
+                                                                        window.location = "<?= base_url() . 'admin/hapusPenjualan/' . $id_keluar ?>";
+                                                                    }
+                                                                }
+                                                            </script>
                                                         </div>
                                                     </div>
                                                 </div>

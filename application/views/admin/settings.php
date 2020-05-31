@@ -1,4 +1,6 @@
 <div class="container-fluid">
+    <?= $this->session->flashdata('message'); ?>
+
     <h1 class="h3 mb-2 text-gray-800">Settings</h1>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -75,7 +77,7 @@
                                         <label class="form-check-label">3</label>
                                     </div><br>
                                     <label>Photo</label>
-                                    <input type="file" name="foto" class="form-control" required>
+                                    <input type="file" name="foto" class="form-control">
                                     <small class="text-danger">Max file uploaded are 2MB</small>
                                 </div>
                             </div>

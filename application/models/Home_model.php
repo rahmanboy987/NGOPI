@@ -1,5 +1,4 @@
 <?php
-
 class Home_model extends CI_Model
 {
     public function warkop_settings()
@@ -12,7 +11,6 @@ class Home_model extends CI_Model
     {
         return $this->db->get('highlight');
     }
-
 
     function tampil_menu()
     {

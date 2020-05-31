@@ -1,4 +1,6 @@
 <div class="container-fluid">
+    <?= $this->session->flashdata('message'); ?>
+
     <h1 class="h3 mb-2 text-gray-800">Kasir</h1>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -75,7 +77,7 @@
                                             function del_barang<?= $row['id_keranjang'] ?>() {
                                                 var txt;
                                                 if (confirm("Anda yakin ingin mendelete data ini?")) {
-                                                    window.location = "<?= base_url() . 'admin/hapusPesanan/' . $row['id_keranjang'] ?>";
+                                                    window.location = "<?= base_url() . 'admin/hapusKeranjang/' . $row['id_keranjang'] ?>";
                                                 }
                                             }
                                         </script>
@@ -89,18 +91,17 @@
                             <th colspan="3" style="text-align:right">Total</th>
                             <th><?= $total ?></th>
                             <th>
-                                <a href="#" onclick="reset_pesanan()" class="btn btn-danger badge">Reset Pesanan</a>
+                                <a href="#" onclick="reset_keranjang()" class="btn btn-danger badge">Reset Keranjang</a>
                                 <script>
-                                    function reset_pesanan() {
+                                    function reset_keranjang() {
                                         var txt;
                                         if (confirm("Anda yakin ingin menreset data ini?")) {
-                                            window.location = "<?= base_url() ?>admin/resetPesanan";
+                                            window.location = "<?= base_url() ?>admin/resetKeranjang";
                                         }
                                     }
                                 </script>
                                 <br>
                                 <form role="form" action="<?= base_url() ?>admin/bayar_pesanan" method="post" autocomplete="off">
-
                                     <input type="hidden" name="total_harga" value="<?= $total; ?>">
                                     <button type="submit" name="bayar_pesanan" class="btn btn-success badge">Bayar Pesanan</button>
                                 </form>
