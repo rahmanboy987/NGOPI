@@ -10,9 +10,9 @@
                         <li class="list-unstyled-item list-hours-item d-flex">
                             <b>NAMA MENU</b> <span class="ml-auto"> <b>HARGA</b></span>
                         </li>
-                        <?php foreach ($menu as $menu) {  ?>
+                        <?php foreach ($menu->result_array() as $row) {  ?>
                             <li class="list-unstyled-item list-hours-item d-flex">
-                                <?= $menu['nama'] ?> <span class="ml-auto"><?= $menu['harga'] ?></span>
+                                <?= $row['nama_produk'] ?> <span class="ml-auto"><?= $row['harga_jual'] ?></span>
                             </li>
                         <?php } ?>
                     </ul>

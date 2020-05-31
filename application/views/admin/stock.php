@@ -25,11 +25,11 @@
                                         <div class="row">
                                             <div class="col-sm">
                                                 <label>Harga Menu</label>
-                                                <input type="text" name="harga_menu" class="form-control" placeholder="Harga Menu" required>
+                                                <input type="number" name="harga_menu" class="form-control" placeholder="Harga Menu" required>
                                             </div>
                                             <div class="col-sm">
                                                 <label>Stock Menu</label>
-                                                <input type="text" name="stock_menu" class="form-control" placeholder="Stock Menu" required>
+                                                <input type="number" name="stock_menu" class="form-control" placeholder="Stock Menu" required>
                                             </div>
                                         </div>
                                         <br>
@@ -42,8 +42,8 @@
                                             <label class="form-check-label">Minuman</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="jenis_menu" value="Dll" checked>
-                                            <label class="form-check-label">Dll</label>
+                                            <input class="form-check-input" type="radio" name="jenis_menu" value="Other" checked>
+                                            <label class="form-check-label">Other</label>
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,15 @@
                     <tbody>
                         <?php foreach ($all_menu->result_array() as $row) {  ?>
                             <tr>
-                                <td><?= $row['jenis_produk']; ?></td>
+                                <td>
+                                    <?php if ($row['jenis_produk'] == "Makanan") { ?>
+                                        <button class="btn btn-success badge"><?= $row['jenis_produk']; ?></button>
+                                    <?php } else if ($row['jenis_produk'] == "Minuman") { ?>
+                                        <button class="btn btn-primary badge"><?= $row['jenis_produk']; ?></button>
+                                    <?php } else if ($row['jenis_produk'] == "Other") {  ?>
+                                        <button class="btn btn-secondary badge"><?= $row['jenis_produk']; ?></button>
+                                    <?php } ?>
+                                </td>
                                 <td><?= $row['nama_produk']; ?></td>
                                 <td><?= $row['harga_jual']; ?></td>
                                 <td><?= $row['stock_produk']; ?></td>
@@ -99,11 +107,11 @@
                                                                 <div class="row">
                                                                     <div class="col-sm">
                                                                         <label>Harga Menu</label>
-                                                                        <input type="text" name="harga_jual" class="form-control" value="<?= $row['harga_jual'] ?>" required>
+                                                                        <input type="number" name="harga_jual" class="form-control" value="<?= $row['harga_jual'] ?>" required>
                                                                     </div>
                                                                     <div class="col-sm">
                                                                         <label>Stock Menu</label>
-                                                                        <input type="text" name="stock_produk" class="form-control" value="<?= $row['stock_produk'] ?>" required>
+                                                                        <input type="number" name="stock_produk" class="form-control" value="<?= $row['stock_produk'] ?>" required>
                                                                     </div>
                                                                 </div>
                                                                 <br>
@@ -116,8 +124,8 @@
                                                                     <label class="form-check-label">Minuman</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="jenis_menu" value="Dll" <?php if ($row['jenis_produk'] == 'Dll') echo "checked" ?>>
-                                                                    <label class="form-check-label">Dll</label>
+                                                                    <input class="form-check-input" type="radio" name="jenis_menu" value="Other" <?php if ($row['jenis_produk'] == 'Other') echo "checked" ?>>
+                                                                    <label class="form-check-label">Other</label>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -7,10 +7,21 @@ class Admin_model extends CI_Model
         $query = $this->db->get_where('user', ['email' => $this->session->userdata('email')]);
         return $query->row_array();
     }
+    public function get_user($id, $pass)
+    {
+        $query = $this->db->query("SELECT * from `user` WHERE id='$id' AND pass='$pass'");
+        return $query->row_array();
+    }
 
     public function getAllMenu()
     {
-        return $this->db->get('produk');
+        return $this->db->order_by('jenis_produk', 'ASC')->get('produk');
+    }
+
+    public function getAllMenuSum()
+    {
+        $query = $this->db->query("SELECT SUM(stock_produk) AS total FROM `produk`");
+        return $query->row_array();
     }
 
     public function getAllUser()
@@ -36,6 +47,36 @@ class Admin_model extends CI_Model
         return $query;
     }
 
+    public function getAllPenjualanBanyak()
+    {
+        $query = $this->db->query("SELECT COUNT(id_user) AS banyak, nama FROM `penjualan_keluar` LEFT JOIN user ON penjualan_keluar.id_user=user.id");
+        return $query;
+    }
+
+    public function getAllPembelianBanyak()
+    {
+        $query = $this->db->query("SELECT COUNT(id_user) AS banyak, nama FROM `pembelian_masuk` LEFT JOIN user ON pembelian_masuk.id_user=user.id");
+        return $query;
+    }
+
+    public function getAllPenjualanSum()
+    {
+        $query = $this->db->query("SELECT SUM(total_harga) AS totalPenjualan FROM `penjualan_keluar`");
+        return $query->row_array();
+    }
+
+    public function getAllPembelianSum()
+    {
+        $query = $this->db->query("SELECT SUM(total_harga) AS totalPembelian FROM `pembelian_masuk`");
+        return $query->row_array();
+    }
+
+    public function getAllHomeMenu()
+    {
+        $query = $this->db->query("SELECT menu.id_menu, menu.id_produk, produk.nama_produk, produk.harga_jual FROM `menu` LEFT JOIN produk ON menu.id_produk=produk.id_produk");
+        return $query;
+    }
+
     public function hapusMenu($id)
     {
         $this->db->where('id_produk', $id);
@@ -58,5 +99,17 @@ class Admin_model extends CI_Model
     {
         $this->db->where('id_user', $id);
         $this->db->delete('keranjang');
+    }
+
+    public function hapusHighlight($id)
+    {
+        $this->db->where('id_highlight', $id);
+        $this->db->delete('highlight');
+    }
+
+    public function hapusHomeMenu($id)
+    {
+        $this->db->where('id_menu', $id);
+        $this->db->delete('menu');
     }
 }

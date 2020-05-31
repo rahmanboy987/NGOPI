@@ -38,7 +38,7 @@ class Home extends CI_Controller
     {
         $data['settings'] = $this->Home_model->warkop_settings();
         $data['title'] = $this->warkop_settings['name'] . ' - Menu2';
-        $data['menu'] = $this->menumodel->tampil_menu();
+        $data['menu'] = $this->Home_model->tampil_menu();
         $this->load->view('home/_include/head', $data);
         $this->load->view('home/menu2');
         $this->load->view('home/_include/foot');

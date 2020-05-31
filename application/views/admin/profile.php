@@ -48,16 +48,16 @@
                                         </button>
                                     </div>
 
-                                    <form role="form" action="<?= base_url() ?>admin/edit_password/" method="post">
+                                    <form role="form" action="<?= base_url() ?>admin/edit_password" method="post">
                                         <div class="modal-body">
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label>Old Password</label>
-                                                    <input type="text" name="nama_user" class="form-control" placeholder="Old Password" required><br>
+                                                    <input type="password" name="old_pass" class="form-control" placeholder="Old Password" required><br>
                                                     <label>New Password</label>
-                                                    <input type="email" name="email_user" class="form-control" placeholder="New Password" required><br>
+                                                    <input type="password" name="new_pass" class="form-control" placeholder="New Password" required><br>
                                                     <label>Retype New Password</label>
-                                                    <input type="email" name="email_user" class="form-control" placeholder="Retype New Password" required><br>
+                                                    <input type="password" name="retype_newpass" class="form-control" placeholder="Retype New Password" required><br>
                                                 </div>
                                             </div>
                                         </div>

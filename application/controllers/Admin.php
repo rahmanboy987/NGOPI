@@ -11,6 +11,7 @@ class Admin extends CI_Controller
         $this->load->helper('url');
         $this->load->model('Admin_model');
         $this->load->model('Home_model');
+        $this->load->helper(array('form', 'url'));
 
         $this->user = $this->Admin_model->get_session();
         if ($this->session->userdata('email') == null) {
@@ -47,6 +48,11 @@ class Admin extends CI_Controller
         } else {
             $data['all_penjualan'] = $this->Admin_model->getAllPenjualan();
             $data['all_pembelian'] = $this->Admin_model->getAllPembelian();
+            $data['all_pembelianBanyak'] = $this->Admin_model->getAllPembelianBanyak();
+            $data['all_penjualanBanyak'] = $this->Admin_model->getAllPenjualanBanyak();
+            $data['all_penjualanSum'] = $this->Admin_model->getAllPenjualanSum();
+            $data['all_pembelianSum'] = $this->Admin_model->getAllPembelianSum();
+            $data['all_menuSum'] = $this->Admin_model->getAllMenuSum();
             $data['all_user'] = $this->Admin_model->getAllUser();
             $this->load_view('report', $data);
         }
@@ -95,9 +101,11 @@ class Admin extends CI_Controller
                 $this->db->update('warkop_settings', $data);
                 redirect('admin/settings');
             } else {
+                $data['all_homeMenu'] = $this->Admin_model->getAllHomeMenu();
                 $data['highlight'] = $this->Home_model->getHighlight();
                 $data['schedule'] = $this->Home_model->getSchedule();
                 $data['all_user'] = $this->Admin_model->getAllUser();
+                $data['all_menu'] = $this->Admin_model->getAllMenu();
                 $this->load_view('settings', $data);
             }
         }
@@ -219,6 +227,24 @@ class Admin extends CI_Controller
         redirect('admin/profile');
     }
 
+    public function edit_password()
+    {
+        $old_pass = password_hash($this->input->post('old_pass'), PASSWORD_DEFAULT);
+        $new_pass = password_hash($this->input->post('new_pass'), PASSWORD_DEFAULT);
+        $retype_newpass = password_hash($this->input->post('retype_newpass'), PASSWORD_DEFAULT);
+
+        if ($this->Admin_model->get_user($this->user['id'], $old_pass)) {
+            if ($new_pass == $retype_newpass) {
+                $data = array(
+                    'pass' => $new_pass
+                );
+                $this->db->where('id', $this->user['id']);
+                $this->db->update('user', $data);
+            }
+        }
+        redirect('admin/profile');
+    }
+
     public function hapusUser($id)
     {
         $this->Admin_model->hapusUser($id);
@@ -250,8 +276,6 @@ class Admin extends CI_Controller
         $this->db->update('keranjang', $data);
         redirect('admin/kasir');
     }
-
-
 
     public function bayar_pesanan()
     {
@@ -296,6 +320,103 @@ class Admin extends CI_Controller
         redirect('admin/kasir');
     }
 
+    public function add_highlight()
+    {
+        $mini_text = $this->input->post('minitext');
+        $name = $this->input->post('textlabel');
+        $description = $this->input->post('description');
+        $template = $this->input->post('template');
+        $foto = $_FILES['foto'];
+        if ($foto != '') {
+            $config['file_name']        = uniqid();
+            $config['upload_path']          = './asset/img';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 2048;
+
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('foto')) {
+                echo 'upload gagal';
+                die();
+            } else {
+                $foto = $this->upload->data('file_name');
+            };
+        }
+        $data = array(
+            'mini_text' => $mini_text,
+            'name' => $name,
+            'photo' => $foto,
+            'description' => $description,
+            'template' => $template
+        );
+
+        $this->db->insert('highlight', $data);
+        redirect('admin/settings');
+    }
+
+    public function edit_highlight($id)
+    {
+        $id_highlight = $this->input->post('id_highlight');
+        $mini_text = $this->input->post('minitext');
+        $name = $this->input->post('textlabel');
+        $description = $this->input->post('description');
+        $template = $this->input->post('template');
+
+        $data = array(
+            'id_highlight' => $id_highlight,
+            'mini_text' => $mini_text,
+            'name' => $name,
+            'description' => $description,
+            'template' => $template
+        );
+
+        $this->db->where('id_highlight', $id);
+        $this->db->update('highlight', $data);
+        redirect('admin/settings');
+    }
+
+    public function delete_highlight($id)
+    {
+        $this->Admin_model->hapusHighlight($id);
+        redirect('admin/settings');
+    }
+
+    public function upload_foto($id)
+    {
+        $foto = $_FILES['foto'];
+        if ($foto != '') {
+            $config['file_name']        = uniqid();
+            $config['upload_path']          = './asset/img';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 2048;
+
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('foto')) {
+                echo 'upload gagal';
+                die();
+            } else {
+                $foto = $this->upload->data('file_name');
+            };
+        }
+        $data = array(
+            'photo' => $foto
+        );
+
+        $this->db->where('id_highlight', $id);
+        $this->db->update('highlight', $data);
+        redirect('admin/settings');
+    }
+
+    public function delete_foto($id)
+    {
+        $data = array(
+            'photo' => ""
+        );
+
+        $this->db->where('id_highlight', $id);
+        $this->db->update('highlight', $data);
+        redirect('admin/settings');
+    }
+
     public function edit_schedule($id)
     {
         $days = $this->input->post('hari');
@@ -306,6 +427,37 @@ class Admin extends CI_Controller
         );
         $this->db->where('id_schedule', $id);
         $this->db->update('schedule', $data);
+        redirect('admin/settings');
+    }
+
+    public function add_homeMenu()
+    {
+        foreach ($this->input->post('menu') as $row) {
+            $data = array(
+                'id_produk' => $row
+            );
+            $this->db->insert('menu', $data);
+        }
+        redirect('admin/settings');
+    }
+
+    public function edit_homeMenu($id)
+    {
+        $id_menu = $this->input->post('id_menu');
+        $id_produk = $this->input->post('menu');
+        $data = array(
+            'id_menu' => $id_menu,
+            'id_produk' => $id_produk
+        );
+        $this->db->where('id_menu', $id);
+        $this->db->update('menu', $data);
+
+        redirect('admin/settings');
+    }
+
+    public function hapusHomeMenu($id)
+    {
+        $this->Admin_model->hapusHomeMenu($id);
         redirect('admin/settings');
     }
 
