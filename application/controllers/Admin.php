@@ -473,12 +473,10 @@ class Admin extends CI_Controller
     public function edit_profile()
     {
         $nama = $this->input->post('nama_user');
-        $email = $this->input->post('email_user');
         $phone = $this->input->post('phone_user');
         $ktp = $this->input->post('ktp_user');
         $data = array(
             'nama' => $nama,
-            'email' => $email,
             'phone' => $phone,
             'ktp' => $ktp
         );

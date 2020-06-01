@@ -188,15 +188,15 @@
                                                                 <textarea type="text" name="description" class="form-control" required><?= $row['description']; ?></textarea><br>
                                                                 <label>Template</label>
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="template" value="1">
+                                                                    <input class="form-check-input" type="radio" name="template" value="1" <?php if ($row['template'] == 1) echo "checked" ?>>
                                                                     <label class="form-check-label">1</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="template" value="2">
+                                                                    <input class="form-check-input" type="radio" name="template" value="2" <?php if ($row['template'] == 2) echo "checked" ?>>
                                                                     <label class="form-check-label">2</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio" name="template" value="3" checked>
+                                                                    <input class="form-check-input" type="radio" name="template" value="3" <?php if ($row['template'] == 3) echo "checked" ?>>
                                                                     <label class="form-check-label">3</label>
                                                                 </div>
                                                             </div>
